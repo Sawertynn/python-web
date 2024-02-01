@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flaskr import db, blog, auth
 
 
 def create_app(test_config=None):
@@ -21,24 +22,16 @@ def create_app(test_config=None):
         app.config.update(test_config)
 
     # ensure the instance folder exists
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
+    os.makedirs(app.instance_path, exist_ok=True)
 
     @app.route("/hello")
     def hello():
         return "Hello, World!"
 
     # register the database commands
-    from . import db
-
     db.init_app(app)
 
     # apply the blueprints to the app
-    from . import auth
-    from . import blog
-
     app.register_blueprint(auth.bp)
     app.register_blueprint(blog.bp)
 
