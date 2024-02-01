@@ -92,6 +92,7 @@ def logout():
 
 
 def login_required(view):
+    """Wrapper to require login for a view"""
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
