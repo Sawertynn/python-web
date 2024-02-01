@@ -26,16 +26,17 @@ def register():
         error = None
 
         if not username:
-            error = "Username is required"
+            error = "Username is required."
         elif not password:
-            error = "Password is required"
+            error = "Password is required."
 
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO user(username, password) VALUES (?, ?)",
+                    "INSERT INTO user (username, password) VALUES (?, ?)",
                     (username, generate_password_hash(password)),
                 )
+                db.commit()
             except db.IntegrityError:
                 error = f"User {username} is already registered."
             else:
