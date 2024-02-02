@@ -136,10 +136,10 @@ input[type=submit] {
     min-width: 10em;
 }
 
-a.single-post {
+a.post-title {
     text-decoration: none;
 }
 
-a.single-post:hover {
+a.post-title:hover {
     filter: brightness(150%);
 }
