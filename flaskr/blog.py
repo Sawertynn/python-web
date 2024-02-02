@@ -1,10 +1,4 @@
-from flask import Blueprint
-from flask import flash
-from flask import g
-from flask import redirect
-from flask import render_template
-from flask import request
-from flask import url_for
+from flask import Blueprint, flash, g, redirect, render_template, request, url_for
 from werkzeug.exceptions import abort
 
 from .auth import login_required
@@ -123,3 +117,11 @@ def delete(id):
     db.execute("DELETE FROM post WHERE id = ?", (id,))
     db.commit()
     return redirect(url_for("blog.index"))
+
+
+@bp.route("/<int:id>/single", methods=("GET", "POST"))
+def single(id):
+    """View single post"""
+
+    post = get_post(id, check_author=False)
+    return render_template("blog/single.html", post=post)
