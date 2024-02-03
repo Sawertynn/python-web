@@ -13,5 +13,16 @@
     {% endif %}
 
     <p class="body">{{ post['body'] }}</p>
+
+    +{{get_react(post['id'], True)}} -{{get_react(post['id'], False)}}
+
+    {% if g.user and g.user['id'] != post['author_id'] %}
+    <form action="{{ url_for('blog.like', post_id=post['id']) }}" method="post">
+        <input type="submit" value="Like">
+    </form>
+    <form action="{{ url_for('blog.dislike', post_id=post['id']) }}" method="post">
+        <input type="submit" value="Dislike">
+    </form>
+    {% endif %}
 </article>
 {% endblock %}

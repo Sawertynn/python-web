@@ -3,6 +3,7 @@
 
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS reacts;
 
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,3 +19,12 @@ CREATE TABLE post (
   body TEXT NOT NULL,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );
+
+CREATE TABLE reacts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  post_id INTEGER,
+  user_id INTEGER,
+  is_like BOOLEAN,
+  FOREIGN KEY (post_id) REFERENCES post (id),
+  FOREIGN KEY (user_id) REFERENCES user (id)
+)

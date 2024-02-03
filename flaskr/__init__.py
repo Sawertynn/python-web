@@ -16,6 +16,7 @@ def create_app(test_config=None):
 
     # jinja2 functions
     app.jinja_env.globals.update(abbreviate=helpers.abbreviate)
+    app.jinja_env.globals.update(get_react=blog.get_react)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
