@@ -142,17 +142,17 @@ def dislike(post_id):
 def react(post_id, user_id, is_like: bool):
     db = get_db()
     if request.method == "POST":
-        packed = db.execute(
-            "SELECT id, is_like FROM reacts WHERE post_id = ? AND user_id = ?",
+        old_like = db.execute(
+            "SELECT is_like FROM reacts WHERE post_id = ? AND user_id = ?",
             (post_id, user_id),
         ).fetchone()
-        if not packed:
+        if not old_like:
             db.execute(
                 "INSERT INTO reacts (post_id, user_id, is_like) VALUES (?, ?, ?)",
                 (post_id, user_id, is_like),
             )
             db.commit()
-        elif packed[1] != is_like:
+        elif old_like[0] != is_like:
             db.execute(
                 "UPDATE reacts SET is_like = ? WHERE post_id = ? AND user_id = ?",
                 (is_like, post_id, user_id),
