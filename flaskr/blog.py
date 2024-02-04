@@ -142,14 +142,20 @@ def dislike(post_id):
 def react(post_id, user_id, is_like: bool):
     db = get_db()
     if request.method == "POST":
-        id = db.execute(
-            "SELECT id FROM reacts WHERE post_id = ? AND user_id = ?",
+        packed = db.execute(
+            "SELECT id, is_like FROM reacts WHERE post_id = ? AND user_id = ?",
             (post_id, user_id),
         ).fetchone()
-        if not id:
+        if not packed:
             db.execute(
                 "INSERT INTO reacts (post_id, user_id, is_like) VALUES (?, ?, ?)",
                 (post_id, user_id, is_like),
+            )
+            db.commit()
+        elif packed[1] != is_like:
+            db.execute(
+                "UPDATE reacts SET is_like = ? WHERE post_id = ? AND user_id = ?",
+                (is_like, post_id, user_id),
             )
             db.commit()
     return redirect(url_for("blog.single", id=post_id))
@@ -164,5 +170,4 @@ def get_react(post_id, is_like: bool):
         )
         .fetchone()[0]
     )
-    print(count)
     return count
